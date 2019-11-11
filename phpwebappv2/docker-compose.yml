@@ -30,7 +30,7 @@ services:
     image: asn/nginx
     build: ../loadbalancer/nginx/
     ports:
-      - "8123:80"
+      - "8000:80"
     depends_on:
       - wwwserver #nginx needs all servers available
     volumes:
