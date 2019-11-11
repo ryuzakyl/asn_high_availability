@@ -5,7 +5,12 @@ services:
     image: asn/phpwebapp
     ports:
       # Random external port for HTTP direct access 
-      - "80:80"
+      - "80"
+
+    # amount of replicas of this service
+    scale: 4
+
+    # limit memory for testing
     mem_limit: 50m
     mem_reservation: 25m
     volumes:
@@ -21,3 +26,13 @@ services:
       - MYSQL_PASSWORD=secreto
     ports:
       - 3306:3306
+  nginx:
+    image: asn/nginx
+    build: ../loadbalancer/nginx/
+    ports:
+      - "8123:80"
+    depends_on:
+      - wwwserver #nginx needs all servers available
+    volumes:
+      # NGinx static config file
+      - ../loadbalancer/nginx/nginx.conf:/etc/nginx/nginx.conf
